@@ -58,6 +58,7 @@ webpage = html.HTML(web_dir, 'Experiment = %s, Phase = %s, Epoch = %s' % (
 for i, data in enumerate(test_dataloader):
     if i >= opt.how_many:
         break
+    # TODO modify cloth_part
     query_ref_mixed, generated = model.inference_enc(data['query'], data['dense_map'],
                                                      data['ref'], cloth_part= opt.cloth_part)
     visuals = OrderedDict([('query', util.tensor2label(data['query'][0], opt.label_nc)),
