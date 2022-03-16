@@ -216,14 +216,18 @@ class Pix2PixHDModel(BaseModel):
         ref = ref.float().cuda()
 
         # Cloth part to mix
-        # TODO modify
         if cloth_part == 'uppercloth':
             query_ref_mixed = torch.cat(
-                (query[:, 0:1, :, :], ref[:, 1:15, :, :], query[:, 15:, :, :]), axis=1)
+                (query[:, 0:1, :, :], ref[:, 1:10, :, :], query[:, 10:, :, :]), axis=1)
 
         elif cloth_part == 'bottomcloth':
-            query_ref_mixed = torch.cat((query[:, 0:9, :, :], ref[:, 9:10, :, :], query[:, 10:12, :, :],
-                                         ref[:, 12:13, :, :], query[:, 13:16, :, :], ref[:, 16:20, :, :]), axis=1)
+             query_ref_mixed = torch.cat(
+                (query[:, 1:10, :, :], ref[:, 10:14, :, :], query[:, 14:, :, :]), axis=1)
+
+        elif cloth_part == 'shoe':
+            query_ref_mixed = torch.cat(
+                (query[:, 1:14, :, :], ref[:, 14:15, :, :], query[:, 15:, :, :]), axis=1)
+        
         # Encoder
         feat_map_total = []
         for each_class in range(self.opt.label_nc):
