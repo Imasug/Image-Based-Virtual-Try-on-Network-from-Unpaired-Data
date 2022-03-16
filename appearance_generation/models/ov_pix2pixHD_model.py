@@ -251,11 +251,12 @@ class Pix2PixHDModel(BaseModel):
         input_encoder = torch.cat(
             (selected_img_tensor, selected_seg_parse_map), 1).cuda()
         with torch.no_grad():
+            # bs * c(30) * h * w
             y_ref_enc = self.netE.forward(input_encoder)
 
         for num_seg_channel in range(20):
             selected_seg_map_tensor = torch.unsqueeze(generated_seg_map, 0)
-            if 7 < num_seg_channel < 10:
+            if 0 < num_seg_channel < 15:
                 app_feature_vec_temp = y_ref_enc
             else:
                 app_feature_vec_temp = y_query_enc

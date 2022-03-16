@@ -47,8 +47,7 @@ class RegularDataset(Dataset):
                 shape=input_image.shape, dtype=input_image.dtype)
 
             for i in range(num_channel_image):
-                # only pants, top
-                if i == 8 or i == 9:
+                if i in range(1, 15):
                     tform_input_image_np[i] = self.transforms['1'](
                         input_image[i])
                 else:

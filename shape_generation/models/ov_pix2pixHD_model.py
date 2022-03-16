@@ -219,7 +219,7 @@ class Pix2PixHDModel(BaseModel):
         # TODO modify
         if cloth_part == 'uppercloth':
             query_ref_mixed = torch.cat(
-                (query[:, 0:8, :, :], ref[:, 8:10, :, :], query[:, 10:, :, :]), axis=1)
+                (query[:, 0:1, :, :], ref[:, 1:15, :, :], query[:, 15:, :, :]), axis=1)
 
         elif cloth_part == 'bottomcloth':
             query_ref_mixed = torch.cat((query[:, 0:9, :, :], ref[:, 9:10, :, :], query[:, 10:12, :, :],
