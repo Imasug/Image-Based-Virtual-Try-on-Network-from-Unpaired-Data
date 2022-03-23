@@ -47,7 +47,7 @@ class TestDataset(Dataset):
 
         # densepose maps
         dense_path = self.densepose_paths[index]
-        dense_img = np.load(dense_path).astype('uint8')  # channel last
+        dense_img = np.uint8(Image.open(dense_path))  # channel last
         dense_img_parts_embeddings = self.parsing_embedding(
             dense_img[:, :, 0], 'densemap')
         dense_img_parts_embeddings = np.transpose(dense_img_parts_embeddings,axes= (1,2,0))

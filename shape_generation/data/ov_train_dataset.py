@@ -47,7 +47,7 @@ class RegularDataset(Dataset):
                 shape=input_image.shape, dtype=input_image.dtype)
 
             for i in range(num_channel_image):
-                if i in range(1, 15):
+                if i in range(1, 6):
                     tform_input_image_np[i] = self.transforms['1'](
                         input_image[i])
                 else:
@@ -68,7 +68,7 @@ class RegularDataset(Dataset):
 
         # densepose maps
         dense_path = self.densepose_paths[index]
-        dense_img = np.load(dense_path).astype('uint8')
+        dense_img = np.uint8(Image.open(dense_path))
         dense_img_parts_embeddings = self.parsing_embedding(
             dense_img[:, :, 0], 'densemap')
 
