@@ -88,7 +88,12 @@ class TestDataset(Dataset):
         parse_emb = []
 
         for i in range(parse_channel):
-            parse_emb.append((parse == i).astype(np.float32).tolist())
+            if i == 0:
+                # 背景情報は削除
+                layer = np.zeros_like(parse, dtype=np.float32).tolist()
+            else:
+                layer = (parse == i).astype(np.float32).tolist()
+            parse_emb.append(layer)
 
         parse = np.array(parse_emb).astype(np.float32)
         return parse
