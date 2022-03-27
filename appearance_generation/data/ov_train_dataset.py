@@ -8,9 +8,17 @@ from glob import glob as glob
 import numpy as np
 import random
 import torch
+from util import transforms
 
 
 class RegularDataset(Dataset):
+
+    transform = transforms.Transforms([
+        transforms.SyncRandomHorizontalFlip(),
+        transforms.SyncRandomRotation((-10, 10)),
+        transforms.SyncRandomScaledCrop((0.5, 2))
+    ])
+
     def __init__(self, opt, augment):
         self.opt = opt
         self.root = opt.dataroot
@@ -30,21 +38,25 @@ class RegularDataset(Dataset):
 
     def __getitem__(self, index):
 
-        # input A (label maps)
         A_path = self.A_paths[index]
-        A = Image.open(A_path)
-        A = self.parsing_embedding(A_path, 'seg')  # channel(20), H, W
+        img_A = Image.open(A_path)
+
+        B_path = self.B_paths[index]
+        img_B = Image.open(B_path)
+
+        img_A, img_B = self.transform(img_A, img_B)
+
+        # input A (label maps)
+        A = self.parsing_embedding(img_A, 'seg')  # channel(20), H, W
         # A_tensor = self.transforms['1'](A)
         A_tensor = torch.from_numpy(A)
 
         # input B (images)
-        B_path = self.B_paths[index]
-        B = Image.open(B_path)
-        B = np.array(B)
+        B = np.array(img_B)
         B_tensor = self.transforms['1'](B)
 
         # original seg mask
-        seg_mask = Image.open(A_path)
+        seg_mask = img_A
         seg_mask = np.array(seg_mask)
         seg_mask = torch.tensor(seg_mask, dtype=torch.long)
 
@@ -53,9 +65,8 @@ class RegularDataset(Dataset):
 
         return input_dict
 
-    def parsing_embedding(self, parse_path, parse_type = "seg"):
+    def parsing_embedding(self, parse, parse_type = "seg"):
         if parse_type == "seg":
-            parse = Image.open(parse_path)
             parse = np.array(parse)
             parse_channel = 20
 
