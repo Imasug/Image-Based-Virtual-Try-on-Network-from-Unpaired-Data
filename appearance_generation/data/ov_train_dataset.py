@@ -12,17 +12,16 @@ from util import transforms
 
 
 class RegularDataset(Dataset):
-
-    transform = transforms.Transforms([
-        transforms.SyncRandomHorizontalFlip(),
-        transforms.SyncRandomRotation((-10, 10)),
-        transforms.SyncRandomScaledCrop((0.5, 2))
-    ])
-
     def __init__(self, opt, augment):
         self.opt = opt
         self.root = opt.dataroot
         self.transforms = augment
+
+        self.transform = transforms.Transforms([
+            transforms.SyncRandomHorizontalFlip(),
+            transforms.SyncRandomRotation((-10, 10)),
+            transforms.SyncRandomScaledCrop((0.8, 1.2))
+        ])
 
         # input A (label maps)
         dir_A = '_label'
