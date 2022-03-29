@@ -19,7 +19,6 @@ class RegularDataset(Dataset):
 
         self.transform = transforms.Transforms([
             transforms.SyncRandomHorizontalFlip(),
-            transforms.SyncRandomRotation((-10, 10)),
             transforms.SyncRandomScaledCrop((1.0, 1.5))
         ])
 

@@ -45,30 +45,31 @@ class SyncRandomScaledCrop:
         self.scale = scale
 
     def __call__(self, data, target):
+        w, h = data.size
         scale = np.random.uniform(*self.scale)
-        size = np.array(data.size)
-        scaled_size = (size * scale).astype(int)
-        data = data.resize(scaled_size, Image.BICUBIC)
-        target = target.resize(scaled_size, Image.NEAREST)
+        scaled_w = int(w * scale)
+        scaled_h = int(h * scale)
+        data = data.resize((scaled_w, scaled_h), Image.BICUBIC)
+        target = target.resize((scaled_w, scaled_h), Image.NEAREST)
+
         if scale > 1.0:
-            diff = scaled_size - size
-            if np.any(diff == 0):
-                return data, target
-            box1 = np.random.randint(0, diff).astype(int)
-            box2 = box1 + size
+            left = int(np.random.uniform(0, (scaled_w - w)))
+            top = int(np.random.uniform(0, (scaled_h - h)))
+            box1 = left, top
+            box2 = left + w, top + h
             data = data.crop((*box1, *box2))
             target = target.crop((*box1, *box2))
         else:
-            diff = size - scaled_size
-            if np.any(diff == 0):
-                return data, target
-            box1 = np.random.randint(0, diff).astype(int)
             original_data = data.copy()
-            data = Image.new(data.mode, tuple(size), 0)
-            data.paste(original_data, tuple(box1))
             original_target = target.copy()
-            target = Image.new(target.mode, tuple(size), 0)
-            target.paste(original_target, tuple(box1))
+            left = int(np.random.uniform(0, (w - scaled_w)))
+            top = int(np.random.uniform(0, (h - scaled_h)))
+            box = left, top
+            size = w, h
+            data = Image.new(data.mode, size, (0, 0, 0))
+            data.paste(original_data, box)
+            target = Image.new(target.mode, size, 0)
+            target.paste(original_target, box)
         return data, target
 
 
