@@ -34,8 +34,8 @@ class SyncRandomRotation:
 
     def __call__(self, data, target):
         angle = np.random.uniform(*self.degrees)
-        data = data.rotate(angle)
-        target = target.rotate(angle)
+        data = data.rotate(angle, Image.BICUBIC)
+        target = target.rotate(angle, Image.NEAREST)
         return data, target
 
 
