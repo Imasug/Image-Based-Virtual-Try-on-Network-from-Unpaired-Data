@@ -19,7 +19,8 @@ class RegularDataset(Dataset):
 
         self.transform = transforms.Transforms([
             transforms.SyncRandomHorizontalFlip(),
-            transforms.SyncRandomScaledCrop((1.0, 1.5))
+            transforms.SyncRandomRotation((-5, 5)),
+            transforms.SyncRandomScaledCrop((1.0, 1.1))
         ])
 
         # input A (label maps)
