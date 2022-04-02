@@ -256,7 +256,7 @@ class Pix2PixHDModel(BaseModel):
 
         for num_seg_channel in range(20):
             selected_seg_map_tensor = torch.unsqueeze(generated_seg_map, 0)
-            if 0 < num_seg_channel < 15:
+            if i in [4, 5, 6, 7, 9, 10, 12, 13, 14, 15]:
                 app_feature_vec_temp = y_ref_enc
             else:
                 app_feature_vec_temp = y_query_enc

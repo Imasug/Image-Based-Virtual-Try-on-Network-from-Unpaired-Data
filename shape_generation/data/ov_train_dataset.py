@@ -47,7 +47,7 @@ class RegularDataset(Dataset):
                 shape=input_image.shape, dtype=input_image.dtype)
 
             for i in range(num_channel_image):
-                if i in range(1, 6):
+                if i in [4, 5, 6, 7, 9, 10, 12, 13, 14, 15]:
                     tform_input_image_np[i] = self.transforms['1'](
                         input_image[i])
                 else:

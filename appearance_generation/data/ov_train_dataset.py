@@ -18,9 +18,9 @@ class RegularDataset(Dataset):
         self.transforms = augment
 
         self.transform = transforms.Transforms([
-            transforms.SyncRandomHorizontalFlip(),
-            transforms.SyncRandomRotation((-5, 5)),
-            transforms.SyncRandomScaledCrop((1.0, 1.1))
+            # transforms.SyncRandomHorizontalFlip(),
+            # transforms.SyncRandomRotation((-5, 5)),
+            # transforms.SyncRandomScaledCrop((1.0, 1.1))
         ])
 
         # input A (label maps)

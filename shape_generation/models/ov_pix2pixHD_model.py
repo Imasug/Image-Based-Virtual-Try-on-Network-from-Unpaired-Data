@@ -218,7 +218,7 @@ class Pix2PixHDModel(BaseModel):
         # Cloth part to mix
         if cloth_part == 'all':
             query_ref_mixed = torch.cat(
-                (query[:, 0:1, :, :], ref[:, 1:6, :, :], query[:, 6:8, :, :], ref[:, 8:9, :, :], query[:, 9:, :, :]), axis=1)
+                (query[:, 0:4, :, :], ref[:, 4:8, :, :], query[:, 8:9, :, :], ref[:, 9:11, :, :], query[:, 11:12, :, :], ref[:, 12:16, :, :], query[:, 16:, :, :]), axis=1)
 
         elif cloth_part == 'uppercloth':
             query_ref_mixed = torch.cat(
